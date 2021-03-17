@@ -1,5 +1,7 @@
 package in.athenaeum.springbootdemo.controllers;
 
+import in.athenaeum.springbootdemo.exceptions.DomainValidationException;
+import in.athenaeum.springbootdemo.exceptions.RecordNotFoundException;
 import in.athenaeum.springbootdemo.models.Book;
 import in.athenaeum.springbootdemo.services.IBookService;
 import in.athenaeum.springbootdemo.viewmodels.BookCreateViewModel;
@@ -54,5 +56,15 @@ public class BookController {
     public ResponseEntity<?> delete(@PathVariable long id) {
         this.bookService.delete(id);
         return ResponseEntity.ok().build();
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<?> handleRecordNotFoundException(RecordNotFoundException rnfe) {
+        return ResponseEntity.notFound().build();
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<?> handleDomainValidationException(DomainValidationException dve) {
+        return ResponseEntity.badRequest().build();
     }
 }
